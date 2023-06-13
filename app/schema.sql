@@ -1,0 +1,18 @@
+/*DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    username TEXT NOT NULL,
+    password_ TEXT NOT NULL
+);
+
+CREATE TABLE query (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user INTEGER NOT NULL,
+    input TEXT NOT NULL,
+    source_lang 
+    target_langs
+    search_type
+);

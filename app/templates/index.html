@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1> {% block title%}Welcome to PwC Legal Search{% endblock%}</h1>
+   <div>
+      {% block form%}
+         <form method="post" action="{{url_for('form')}}">
+            <div class="col-md-6 mx-auto text-center">
+               <label for="keywords" class="form-label fw-bold fs-5">Username</label>
+               <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
+                  <input type="text" class="form-control" id="username" name="username" style="max-width: 256px;">
+               </div>
+               <label for="source_lang" class="form-label fw-bold fs-5">Password</label>
+               <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
+                  <input type="text" class="form-control" id="password" name="password" style="max-width: 256px;">
+               </div>            
+               <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
+                  <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Log in</button>
+               </div>            
+            </div>
+         </form>
+      {% endblock%}
+   </div>
+{% endblock%}

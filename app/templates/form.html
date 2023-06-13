@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+   
+{% block tilte %}Search Page{% endblock%}
+
+{% block search_form %}
+
+<div class="card shadow-lg border-0 rounded-lg mt-4">
+    <div class="card-header">
+    <h3 class="text-left font-weight-light my-4">
+        Specify the search options
+    </h3>
+    </div>
+    <div class="card-body">    
+        <form method="POST" action="{{url_for("form")}}">
+            {{form.csrf_token}}
+            <div class="row mb-3">
+                <div class="form-floating mb-3 mb-md-0">
+                    {{form.query(class="form-control", id="query", type="text", placeholder="Write your query")}}
+                    {{form.query.label(for="query")}}
+                </div>   
+            </div>
+            <div class="row mb-3">
+                <div class="form-floating mb-3 mb-md-0">
+                    <p>
+                        <span>Query type: <i id="infoIcon" class="fa-solid fa-circle-info" hidden></i><span id="infoText" hidden>Boum</span>
+                        <br>
+                        {% for option in form.search_types %}
+                            {%if form.search_types.get(option)=='full'%}
+                                <input type="radio" value={{form.search_types.get(option)}} name="search_type_selected" disabled>
+                                <label for="{{form.search_types.get(option)}}">{{option}}</label>
+                            {%else%}
+                                <input type="radio" value={{form.search_types.get(option)}} name="search_type_selected">
+                                <label for="{{form.search_types.get(option)}}">{{option}}</label>
+                            {%endif%}                       
+                        {% endfor %}
+                    </p>
+                </div>
+                <div class="form-floating mb-3 mb-md-0">
+                    {%block filters%} {% endblock %}
+                </div>    
+            </div>   
+            <div class="row mb-3">
+                <div class="form-floating mb-3 mb-md-0">
+                Source language: {{form.source_lan(class="from-control", id="source_lan")}}
+                <!-- <button class="button" onclick="$('#info-box-1').data('infobox').open()">Open InfoBox</button>
+                <div class="info-box" data-role="infobox" data-type="alert" hidden>
+                    <span class="button square closer"></span>
+                    <div class="info-box-content">
+                        <h3>What is Lorem Ipsum?</h3>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    </div>
+                </div>-->
+                </div> 
+            </div>
+            <div class="row mb-3">
+                <p>
+                    Translation into:
+                    {% for l in form.target_langs_options%}
+                        <input type="checkbox" class="form-check-input" value="{{form.target_langs_options.get(l)}}" name="target_lan_selection"/>{{l}}
+                    {%endfor%}
+                </p>
+            </div>            
+            <p>
+                <input class="btn btn-primary" type="submit" value="SEARCH"/>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block results %}{% endblock %}

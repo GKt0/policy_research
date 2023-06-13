@@ -1,0 +1,167 @@
+
+{% extends 'filters.html'%}
+<!--jens devloo -->
+{% block title%}Result Page{%endblock%}
+
+{%block results%}
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JavaScript plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+
+  <div class='card mb-4 mt-4'>
+    <div class='card-header'>
+      <i class="fa-brands fa-searchengin"></i>
+      <span>Query (using: {{search_type_select}})</span>
+    </div>
+    <div class="card-body">
+      {% if keywords == "*" %}
+        <h4>All Articles</h4>
+      {% else %}
+        <h5>You're looking for articles related to:</h5>
+        <ul>
+          {% for word in keywords%}
+            <li>{{word}}</li>
+          {% endfor%}
+        </ul>
+      {% endif %}
+      {% if excluded|length > 0 %}
+        <h5>You excluded those words:</h5>
+        <ul>                
+          {% for word in excluded%}
+            <li>{{word}}</li>
+          {% endfor%}
+        </ul>
+      {% endif %}  
+    </div>      
+  </div>
+
+
+
+
+<div class="card mb-4 mt-4">
+  <div class="card-header">
+    <i class="fa-solid fa-folder-tree"></i>
+    Results
+  </div>
+  <div class="card-body">
+    {% block filter %}{% endblock %}
+    {% if errors|length>0 %}
+            <span style="color: red"><b>{{errors[0]}}</b></span>
+    {% else %}
+      <table id="datatablesSimple">
+        <caption>Retrieved article based on your research</caption>
+        <thead>
+            <tr>
+                <th>Articles retrieved:</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in res %}
+              <tr>
+                <td>
+                  <!-- Card to display a result-->
+                    <div class='card mb-4 mt-4'>
+                      <div class='card-header'>
+                        <i class="fa-regular fa-newspaper" style="color: #22324f;"></i> 
+                        {%if r['country']=='FR'%}
+                          <i class="french-flag"></i>
+                        {% elif r['country']=='PT' %}
+                          <i class="portugese-flag"></i>
+                        {%endif%}
+                        <span><a href="{{r['article_link']}}">{{r['article_title']}}</a></span>
+                        published on <span class="dateTimeOffSet">{{r['journal_dateType']}}</span>
+                      </div>
+                      <div class="card-body">
+                        {%if r['article_id'] != none %}
+                          <p><span class="text-decoration-underline">Ref:</span><span class="fst-italic"> {{r['article_id']}}</span></p>
+                        {%endif%}
+                        {%if r['child_link'] != none %}
+                          <p class="sub_article_title"><a href="{{r['child_link']}}">{{r['child_title']}}</a></p>
+                        {%endif%}
+                        
+                        {%if r['@search.highlights][article_title]']%}
+                          {% for highlight in r['@search.highlights']['article_title'] %}
+                            <p class="content"><span>{{ highlight | safe }}</span></p>
+                          {% endfor %}
+                        {%endif%}
+                        {%if r['@search.highlights']['child_text']%}
+                        <p><span><b>The following texts are highlighted shorter parts of the actual content of the entire article.</b></span></p>
+                          {% for highlight in r['@search.highlights']['child_text'] %}
+                            <p class="content"><span>{{ highlight | safe }}</span></p>
+                          {% endfor %}
+                        {%endif%}  
+                        
+                        
+
+                        {%if r['@search.reranker_score']%}
+                        <p>Search reranker score: {{r['@search.reranker_score']}}</p>
+                        {%else%}
+                        <p>Search score: {{r['@search.score']}}</p>
+                        {% endif %}
+                      </div>
+                    </div>
+                    
+                    <!--
+                    <div class="card-resizable">
+                      <div class="card-header">
+                        <h5 class="mb-0">
+                          {{r['article_title']}}
+                          <button class="btn btn-link" data-toggle="collapse" data-target="#{{r['ID']}}}" aria-expanded="true" aria-controls="collapseOne">
+                            biger
+                          </button>
+                        </h5>
+                      </div>
+                    
+                      <div id="{{r['ID']}}" class="collapse show">
+                        <div class="card-body-resizable">
+                          {{r['child_text']}}
+                        </div>
+                      </div>
+                    </div>
+                  -->
+                </td>
+              </tr>        
+            {% endfor %}
+        </tbody>
+      </table>
+      {%endif%}
+    </div>     
+  </div>
+  <div>
+    <p class="fs-5">Currently in development.</p>
+    <a href="{{ url_for('form') }}" class="btn btn-primary btn-lg px-4 gap-3">Back to searching form</a>
+  </div>
+
+
+<!-- ++++++++++Scripts+++++++++ -->
+<script>
+// Get all the span elements with the class "dateTimeOffSet"
+const dateTimeOffSetList = document.querySelectorAll('span.dateTimeOffSet');
+
+// Loop over each element and format the date
+dateTimeOffSetList.forEach(dateTimeOffSetElement => {
+  // Get the dateTimeOffSet value from the element's text content
+  const dateTimeOffSet = dateTimeOffSetElement.textContent.trim();
+
+  // Create a new Date object from the dateTimeOffSet value
+  const date = new Date(dateTimeOffSet);
+
+  // Extract the year, month, and day from the date object
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  // Create a new string in the yyyy/mm/dd format
+  const formattedDate = `${year}/${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}`;
+
+  // Set the element's text content to the formatted date
+  dateTimeOffSetElement.textContent = formattedDate;
+});
+
+</script>
+
+{%endblock%}

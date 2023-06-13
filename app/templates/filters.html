@@ -1,0 +1,10 @@
+{% extends 'form.html'%}
+
+{% block filters %}
+    
+    <div class='col-2'>
+        {{form.starting_date.label(for="start")}}{{form.starting_date(id="start", type="date", placeholder="DD/MM/YYYY")}}    
+        {{form.end_date.label(for="end")}}{{form.end_date(id="end", type="date", placeholder="DD/MM/YYYY")}}
+    </div>
+
+{% endblock %}

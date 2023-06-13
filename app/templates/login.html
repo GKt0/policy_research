@@ -1,0 +1,34 @@
+{% extends 'base2.html' %}
+
+{% block tilte %}Login Page{% endblock %}
+
+{% block login %}
+<form method="POST" action="{{url_for("login")}}">
+    {{form.csrf_token}}
+    
+    <div class="row input-group-newsletter">
+        <div class="row-2 col-auto">
+            {{form.username.label}} 
+            {{form.username(class='form-control', placeholder="Username", type="email")}}          
+        </div>
+        <div class="row-2 col-auto">
+            {{form.password.label}}   
+            {{form.password(class='form-control', placeholder="Password")}}
+        </div>     
+    </div>
+    <div class="row input-group-newsletter">
+        <p class='mb-3'>
+            <div class="col-auto">
+                <input class="btn btn-primary" type="submit" value="Log in" disable=""/> 
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit" onclick="{{url_for("signUp")}}">Sign up</button>
+            </div>
+        </p>
+    </div>
+</form>
+{% endblock%}
+
+ 
+
+
