@@ -128,7 +128,7 @@ def translate(input, source, target):
     #language detection wasnt accurate enough to let the user write in any language
     #default source is 'EN', user has no choice atm.
     
-    AUTH_KEY = "b3bfe684-e857-e221-2cef-e12549d8ae6f:fx"
+    AUTH_KEY = "YOUR_DEEPL_KEY"
     translator = deepl.Translator(AUTH_KEY)
     translation = translator.translate_text(input, target_lang=target,source_lang=source)
     #translation = []
@@ -205,7 +205,7 @@ def createSearchClient(country):
     # Get the service endpoint and API key from the environment
     endpoint = "https://{}.search.windows.net/".format(service_name)
     #Only read key
-    key = "eiIIski8cBNxma9F8RODEe14mPWg2ZjU5vATpN6ILOAzSeABqSrM"
+    key = "YOUR_KEY"
     # Create a client
     credential = AzureKeyCredential(key)
     client = SearchClient(endpoint=endpoint,
